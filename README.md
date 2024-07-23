@@ -1,6 +1,6 @@
 # FAANG Stock Price Prediction App
 
-This repository contains a fullstack application designed to compare the closing price outputs of FAANG stocks using various deep learning and machine learning models. The app integrates multiple models to provide real-time stock analysis and recommendations.
+This repository contains a fullstack application designed to compare the closing price outputs of different FAANG stocks using various deep learning and machine learning models. Comparing these outputs leads us to draw interesting conclusions about the efficacy of different ML/DL models on a controlled group of stocks.
 
 ## Features
 
@@ -18,7 +18,7 @@ This repository contains a fullstack application designed to compare the closing
 1. **Clone the repository:**
 
     ```bash
-    git clone https://github.com/yourusername/FAANG-stock-prediction-app.git
+    git clone https://github.com/VarKal23/FAANG-Watcher.git
     cd FAANG-stock-prediction-app
     ```
 
@@ -29,6 +29,7 @@ This repository contains a fullstack application designed to compare the closing
     python -m venv venv
     source venv/bin/activate  # On Windows use `venv\Scripts\activate`
     pip install -r requirements.txt
+    flask --app server.py run 
     ```
 
 3. **Frontend Setup:**
@@ -36,32 +37,15 @@ This repository contains a fullstack application designed to compare the closing
     ```bash
     cd frontend
     npm install
-    npm start
+    npm run dev
     ```
 
 ### Configuration
 
-- **Finnhub API Key**: Add your Finnhub API key to the `.env` file in the backend directory.
+- **Backend env file**: Add the following to a .env file in the backend directory.
 
     ```env
     FINNHUB_API_KEY=your_finnhub_api_key
-    ```
-
-## Usage
-
-- **Start Backend Server**: 
-
-    ```bash
-    cd backend
-    source venv/bin/activate  # On Windows use `venv\Scripts\activate`
-    python app.py
-    ```
-
-- **Start Frontend Server**:
-
-    ```bash
-    cd frontend
-    npm start
     ```
 
 ## Models
@@ -70,7 +54,7 @@ This repository contains a fullstack application designed to compare the closing
 
 - **Description**: Custom LSTM RNN designed with a TBTT (Truncated Backpropagation Through Time) length of 90 to optimize model for estimating quarterly trends.
 - **Training Data**: Trained on 5 years of FAANG historical data including Prices, RSI, Volume, MACD, and MA50 obtained through YFinance.
-- **Notebook**: 
+- **Notebook**: *(To be added)*
 
 ### Linear Regression
 
