@@ -42,10 +42,10 @@ This repository contains a fullstack application designed to compare the closing
 
 ### Configuration
 
-- **Fronted env file**: Add the following to a .env file in the backend directory.
+- **Fronted env file**: Add a finnhub client api key to a .env file in the frontend directory.
 
     ```env
-    FINNHUB_API_KEY=your_finnhub_api_key
+    REACT_APP_API_KEY=your_finnhub_api_key
     ```
 
 ## Models
