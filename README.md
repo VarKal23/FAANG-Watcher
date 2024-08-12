@@ -42,7 +42,7 @@ This repository contains a fullstack application designed to compare the closing
 
 ### Configuration
 
-- **Backend env file**: Add the following to a .env file in the backend directory.
+- **Fronted env file**: Add the following to a .env file in the backend directory.
 
     ```env
     FINNHUB_API_KEY=your_finnhub_api_key
