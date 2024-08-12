@@ -19,7 +19,7 @@ const form = (props) => {
   const sendData = async (event) => {
     event.preventDefault();
     try {
-      const response = await axios.post('http://127.0.0.1:5000/send', {
+      const response = await axios.post(process.env.BACKEND_URL + '/send', {
         "title" : title,
         "start" : start,
         "end" : end 
@@ -39,7 +39,7 @@ const form = (props) => {
     // Function to run on page reload
     const handlePageReload = async () => {
       try {
-        const response = await axios.post('http://127.0.0.1:5000/send', {
+        const response = await axios.post(process.env.BACKEND_URL + '/send', {
           "title" : title,
           "start" : start,
           "end" : end 

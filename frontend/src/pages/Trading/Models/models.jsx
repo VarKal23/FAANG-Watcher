@@ -17,7 +17,7 @@ function Models(props) {
         try {
             if (selectedModel) {
                 console.log('Sending data to backend...');
-                const response = await axios.post('http://127.0.0.1:5000/model', {
+                const response = await axios.post(process.env.BACKEND_URL + '/model', {
                     data: props.data.data,
                     ticker: props.data.ticker,
                     start: props.data.start,

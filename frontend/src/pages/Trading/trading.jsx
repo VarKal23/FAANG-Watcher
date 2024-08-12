@@ -14,7 +14,7 @@ const trading = () => {
   const [lastTransaction, setLastTransaction] = useState([{}]);
 
   useEffect(() => {
-    fetch("http://127.0.0.1:5000/data").then(response => 
+    fetch(process.env.BACKEND_URL + "/data").then(response => 
       response.json().then(data_obj => {
         setData(data_obj);
         setLastTransaction(data_obj);
