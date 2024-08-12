@@ -105,6 +105,3 @@ def storeCsv(stock_data, ticker, starting, ending):
 def removeCsv(file_name):
     if os.path.exists(file_name):
         os.remove(file_name)
-
-if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0', port=5000)
