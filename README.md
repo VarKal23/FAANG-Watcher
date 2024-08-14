@@ -46,6 +46,7 @@ This repository contains a fullstack application designed to compare the closing
 
     ```env
     REACT_APP_API_KEY=your_finnhub_api_key
+    BACKEND_URL=your_localhost/backend_url
     ```
 
 ## Models
@@ -54,6 +55,7 @@ This repository contains a fullstack application designed to compare the closing
 
 - **Description**: Custom LSTM RNN designed with a TBTT (Truncated Backpropagation Through Time) length of 90 to optimize model for estimating quarterly trends.
 - **Training Data**: Trained on 5 years of FAANG historical data including Prices, RSI, Volume, MACD, and MA50 obtained through YFinance.
+- **Model Writeup**: https://docs.google.com/document/d/14mXQikkPrm3bXeorJyb1lWaCh3lAMOzZVZ_klGmscrA/edit?usp=sharing
 - **Notebook**: *(To be added)*
 
 ### Linear Regression
