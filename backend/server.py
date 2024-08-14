@@ -39,6 +39,7 @@ def data(ticker="AAPL",starting=None,ending=None):
     data = parseJson(data)
     return {"data" : data, "ticker" : ticker, "start" : starting, "end": ending, "time" : datetime.now().strftime('%I:%M %p'), "price" : today_close, "change" : ((today_close - yesterday_close)/yesterday_close * 100).round(2), "modal" : "Regression"}
 
+from models import arima_prediction, regression_prediction
 @app.route("/model", methods=["POST"])
 def model(): 
     form = request.get_json()   # Access JSON data sent in the request body
@@ -57,19 +58,13 @@ def model():
     today_close = data["Adj Close"][len(data)-1]
     yesterday_close = data["Adj Close"][len(data)-2]
 
-    path = storeCsv(data, ticker, starting, ending)
-
     if (type == "Regression"):
-        data = execute_notebook_with_variables('regression_prediction.ipynb', {"file_path": path, "ticker": ticker, "duration": duration})
-        print("Regression after pred ", data)
+        data = regression_prediction(data, duration)
     elif (type == "ARIMA"):
-        data = execute_notebook_with_variables('arima_prediction.ipynb', {"file_path": path, "ticker": ticker, "duration": duration})
-        print("ARIMA after pred ", data)
+        data = arima_prediction(data, duration)
     elif (type == "LSTM"):
         data = lstm_future_predictions(ticker, duration, form['end'])
-        print("LSTM after pred ", data)
 
-    removeCsv(path)
     return {"data" : data, "ticker" : ticker, "start" : starting, "end": ending, "time" : datetime.now().strftime('%I:%M %p'), "price" : today_close, "change" : ((today_close - yesterday_close)/yesterday_close * 100).round(2), "modal" : type}
 
 @app.route("/send", methods=["POST"])
@@ -91,17 +86,3 @@ def parseJson(stock_data):
         nested_json[date] = group[['Open', 'High', 'Low', 'Close', 'Adj Close', "Date"]].to_dict(orient='records')
     return nested_json
 
-def storeCsv(stock_data, ticker, starting, ending):
-    directory = 'csv'
-    if not os.path.exists(directory):
-        os.makedirs(directory)
-    
-    csv_file_path = f"./{directory}/{ticker}_{''.join(filter(str.isdigit, starting))}_{''.join(filter(str.isdigit, ending))}.csv"
-
-    stock_data.to_csv(csv_file_path, mode='a', index=False, columns=stock_data.columns.tolist())
-
-    return csv_file_path
-
-def removeCsv(file_name):
-    if os.path.exists(file_name):
-        os.remove(file_name)

@@ -6,6 +6,9 @@ import torch
 from torch import nn
 from datetime import datetime
 from historical_data import get_90_stock_data
+from sklearn.linear_model import LinearRegression
+import numpy as np
+from statsmodels.tsa.arima.model import ARIMA
 
 
 # LSTM Model Architecture
@@ -36,6 +39,58 @@ class FaangRNN(nn.Module):
         linear_output = self.fc(last_output)
 
         return linear_output
+
+
+def arima_prediction(data, duration):
+    # Preprocess data
+    columns = ['Open', 'High', 'Low', 'Close', 'Adj Close']
+    for column in columns:
+        data[column] = pd.to_numeric(data[column], errors='coerce')
+    data.dropna(subset=columns, inplace=True)
+    
+    prices = data["Close"]
+    prices.index = pd.to_datetime(data["Date"], format='%a, %d %b %Y %H:%M:%S GMT')
+    prices.index = prices.index.tz_localize(None)
+
+    # Fit ARIMA model
+    model = ARIMA(prices, order=(7, 0, 6))  # Adjust the order parameters as needed
+    fitted = model.fit()
+
+    # Forecast future prices
+    next_day_prices = fitted.forecast(steps=int(duration))
+    
+    # Generate trading days using the provided trading_days function
+    trading_days_list = trading_days(int(duration), datetime.now())
+
+    return {"Adj Close": next_day_prices.tolist(), "Date": trading_days_list}
+
+
+def regression_prediction(data, duration):
+    # Preprocess data
+    columns = ['Open', 'High', 'Low', 'Close', 'Adj Close']
+    for column in columns:
+        data[column] = pd.to_numeric(data[column], errors='coerce')
+    data.dropna(subset=columns, inplace=True)
+    
+    # Prepare data for regression model
+    data['Days'] = np.arange(len(data))
+    X = data[['Days']]
+    y = data['Close']
+
+    # Fit regression model
+    model = LinearRegression()
+    model.fit(X, y)
+
+    # Predict future prices
+    future_days = np.arange(len(data), len(data) + int(duration)).reshape(-1, 1)
+    future_prices = model.predict(future_days)
+    
+    # Generate trading days using the provided trading_days function
+    trading_days_list = trading_days(int(duration), datetime.now())
+
+    return {"Adj Close": future_prices.tolist(), "Date": trading_days_list}
+
+
 
 
 def lstm_future_predictions(ticker, pred_days, end_date):
